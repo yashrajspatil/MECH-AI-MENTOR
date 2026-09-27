@@ -89,186 +89,505 @@ app = Flask(__name__)
 HTML = """
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Mech AI Mentor</title>
+<title>Mech AI Mentor</title>
 
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
 
-        body {
+body {
 
-            margin: 0;
+    margin: 0;
 
-            font-family: Arial, sans-serif;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 
-            background: #f4f6f8;
+    background:
+        radial-gradient(
+            circle at top right,
+            #1e3a5f,
+            #0b1120 45%,
+            #070b14
+        );
 
-            color: #222;
-        }
+    color: #f5f7fa;
 
+    min-height: 100vh;
 
-        .container {
+}
 
-            max-width: 900px;
 
-            margin: 50px auto;
+/* MAIN CONTAINER */
 
-            padding: 20px;
-        }
+.container {
 
+    width: 100%;
 
-        h1 {
+    max-width: 1100px;
 
-            text-align: center;
+    margin: auto;
 
-            font-size: 40px;
+    padding: 35px 20px;
 
-            margin-bottom: 10px;
-        }
+}
 
 
-        .subtitle {
+/* HEADER */
 
-            text-align: center;
+.header {
 
-            color: #666;
+    text-align: center;
 
-            margin-bottom: 30px;
-        }
+    margin-bottom: 30px;
 
+}
 
-        .chat-box {
 
-            background: white;
+.logo {
 
-            border-radius: 16px;
+    font-size: 42px;
 
-            padding: 25px;
+    margin-bottom: 8px;
 
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-        }
+}
 
 
-        #chat {
+.title {
 
-            min-height: 300px;
+    font-size: 38px;
 
-            margin-bottom: 20px;
-        }
+    font-weight: 700;
 
+    margin: 0;
 
-        .message {
+    letter-spacing: -1px;
 
-            padding: 16px;
+}
 
-            border-radius: 12px;
 
-            margin-bottom: 15px;
+.subtitle {
 
-            line-height: 1.6;
+    color: #9ca9bb;
 
-            white-space: pre-wrap;
-        }
+    margin-top: 10px;
 
+    font-size: 16px;
 
-        .user {
+}
 
-            background: #e8f0fe;
-        }
 
+/* MAIN CARD */
 
-        .bot {
+.chat-card {
 
-            background: #eeeeee;
-        }
+    background: rgba(15, 23, 42, 0.88);
 
+    border: 1px solid rgba(255,255,255,0.08);
 
-        .input-area {
+    border-radius: 20px;
 
-            display: flex;
+    overflow: hidden;
 
-            gap: 10px;
-        }
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.35);
 
+    backdrop-filter: blur(15px);
 
-        input {
+}
 
-            flex: 1;
 
-            padding: 15px;
+/* TOP BAR */
 
-            font-size: 16px;
+.top-bar {
 
-            border: 1px solid #ccc;
+    display: flex;
 
-            border-radius: 8px;
+    justify-content: space-between;
 
-            outline: none;
-        }
+    align-items: center;
 
+    padding: 18px 24px;
 
-        button {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 
-            padding: 15px 22px;
+}
 
-            border: none;
 
-            border-radius: 8px;
+.status {
 
-            background: #222;
+    display: flex;
 
-            color: white;
+    align-items: center;
 
-            font-size: 16px;
+    gap: 8px;
 
-            cursor: pointer;
-        }
+    color: #cbd5e1;
 
+    font-size: 14px;
 
-        button:disabled {
+}
 
-            opacity: 0.5;
 
-            cursor: not-allowed;
-        }
+.status-dot {
 
+    width: 9px;
 
-        .error {
+    height: 9px;
 
-            background: #ffe5e5;
+    background: #22c55e;
 
-            color: #b00000;
-        }
+    border-radius: 50%;
 
+    box-shadow: 0 0 10px #22c55e;
 
-        @media (max-width: 600px) {
+}
 
-            .input-area {
 
-                flex-direction: column;
-            }
+.model {
 
-            button {
+    color: #718096;
 
-                width: 100%;
-            }
+    font-size: 13px;
 
-        }
+}
 
-    </style>
+
+/* CHAT */
+
+#chat {
+
+    height: 480px;
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+}
+
+
+.message {
+
+    max-width: 80%;
+
+    padding: 15px 18px;
+
+    border-radius: 15px;
+
+    margin-bottom: 18px;
+
+    line-height: 1.65;
+
+    white-space: pre-wrap;
+
+    animation: fadeIn 0.25s ease;
+
+}
+
+
+@keyframes fadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(5px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+.user {
+
+    margin-left: auto;
+
+    background: #2563eb;
+
+    border-bottom-right-radius: 4px;
+
+}
+
+
+.bot {
+
+    margin-right: auto;
+
+    background: #182235;
+
+    border: 1px solid rgba(255,255,255,0.07);
+
+    border-bottom-left-radius: 4px;
+
+}
+
+
+.message-label {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    margin-bottom: 5px;
+
+    opacity: 0.8;
+
+}
+
+
+/* SUGGESTIONS */
+
+.suggestions {
+
+    padding: 0 25px 20px;
+
+}
+
+
+.suggestions-title {
+
+    color: #7f8da3;
+
+    font-size: 12px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.suggestion-buttons {
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.suggestion {
+
+    background: #111a2b;
+
+    border: 1px solid #26344d;
+
+    color: #cbd5e1;
+
+    padding: 9px 13px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+
+}
+
+
+.suggestion:hover {
+
+    border-color: #3b82f6;
+
+    color: white;
+
+    background: #17243a;
+
+}
+
+
+/* INPUT */
+
+.input-section {
+
+    padding: 20px 25px 25px;
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+}
+
+
+.input-box {
+
+    display: flex;
+
+    gap: 10px;
+
+    background: #0c1424;
+
+    border: 1px solid #26344d;
+
+    border-radius: 13px;
+
+    padding: 7px;
+
+}
+
+
+input {
+
+    flex: 1;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: white;
+
+    padding: 12px;
+
+    font-size: 15px;
+
+}
+
+
+input::placeholder {
+
+    color: #64748b;
+
+}
+
+
+button.ask {
+
+    border: none;
+
+    background: #2563eb;
+
+    color: white;
+
+    padding: 0 20px;
+
+    border-radius: 9px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+button.ask:hover {
+
+    background: #3b82f6;
+
+}
+
+
+button.ask:disabled {
+
+    opacity: 0.5;
+
+    cursor: not-allowed;
+
+}
+
+
+/* FOOTER */
+
+.footer {
+
+    text-align: center;
+
+    color: #526176;
+
+    font-size: 12px;
+
+    margin-top: 18px;
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .container {
+
+        padding: 20px 10px;
+
+    }
+
+
+    .title {
+
+        font-size: 30px;
+
+    }
+
+
+    #chat {
+
+        height: 55vh;
+
+    }
+
+
+    .message {
+
+        max-width: 90%;
+
+    }
+
+
+    .suggestion-buttons {
+
+        flex-direction: column;
+
+    }
+
+
+    .suggestion {
+
+        width: 100%;
+
+        text-align: left;
+
+    }
+
+
+    button.ask {
+
+        padding: 0 15px;
+
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -279,51 +598,162 @@ HTML = """
 <div class="container">
 
 
-    <h1>🔧 Mech AI Mentor</h1>
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="logo">⚙️</div>
+
+        <h1 class="title">Mech AI Mentor</h1>
+
+        <p class="subtitle">
+            Your AI assistant for Mechanical Engineering
+        </p>
+
+    </div>
 
 
-    <p class="subtitle">
+    <!-- CHAT CARD -->
 
-        AI-powered Mechanical Engineering Mentor
-
-    </p>
+    <div class="chat-card">
 
 
-    <div class="chat-box">
+        <!-- TOP BAR -->
+
+        <div class="top-bar">
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                Sarvam AI Online
+
+            </div>
 
 
-        <div id="chat">
+            <div class="model">
 
-            <div class="message bot">
-
-                🤖 <strong>Sarvam:</strong>
-
-                <br>
-
-                Ask me any Mechanical Engineering question.
+                sarvam-105b-conversations
 
             </div>
 
         </div>
 
 
-        <div class="input-area">
+        <!-- CHAT -->
 
-            <input
-                id="question"
-                type="text"
-                placeholder="Ask a Mechanical Engineering question..."
-            >
+        <div id="chat">
 
 
-            <button id="askButton">
+            <div class="message bot">
 
-                Ask Sarvam
+                <div class="message-label">
+                    🤖 Sarvam
+                </div>
 
-            </button>
+                Hello! I'm your Mechanical Engineering AI mentor.
+
+                Ask me about thermodynamics, fluid mechanics,
+                heat transfer, materials, CAD, or other
+                engineering concepts.
+
+            </div>
+
 
         </div>
 
+
+        <!-- SUGGESTIONS -->
+
+        <div class="suggestions">
+
+            <div class="suggestions-title">
+                Try asking
+            </div>
+
+
+            <div class="suggestion-buttons">
+
+
+                <button
+                    class="suggestion"
+                    onclick="useQuestion('Explain the first law of thermodynamics')"
+                >
+                    First law of thermodynamics
+                </button>
+
+
+                <button
+                    class="suggestion"
+                    onclick="useQuestion('What is Reynolds number?')"
+                >
+                    Reynolds number
+                </button>
+
+
+                <button
+                    class="suggestion"
+                    onclick="useQuestion('Explain forced convection')"
+                >
+                    Forced convection
+                </button>
+
+
+                <button
+                    class="suggestion"
+                    onclick="useQuestion('What is the difference between stress and strain?')"
+                >
+                    Stress vs strain
+                </button>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- INPUT -->
+
+        <div class="input-section">
+
+
+            <div class="input-box">
+
+
+                <input
+
+                    id="question"
+
+                    type="text"
+
+                    placeholder="Ask a Mechanical Engineering question..."
+
+                    autocomplete="off"
+
+                >
+
+
+                <button
+                    class="ask"
+                    id="askButton"
+                    onclick="askQuestion()"
+                >
+                    Ask
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer">
+
+        Built with Python · Flask · Sarvam AI
 
     </div>
 
@@ -335,15 +765,26 @@ HTML = """
 <script>
 
 
-const input = document.getElementById("question");
-
-const button = document.getElementById("askButton");
-
-const chat = document.getElementById("chat");
+const input =
+    document.getElementById("question");
 
 
+const button =
+    document.getElementById("askButton");
 
-button.addEventListener("click", askQuestion);
+
+const chat =
+    document.getElementById("chat");
+
+
+
+function useQuestion(question) {
+
+    input.value = question;
+
+    input.focus();
+
+}
 
 
 
@@ -362,7 +803,8 @@ input.addEventListener("keydown", function(event) {
 async function askQuestion() {
 
 
-    const question = input.value.trim();
+    const question =
+        input.value.trim();
 
 
     if (!question) {
@@ -372,72 +814,83 @@ async function askQuestion() {
     }
 
 
-    // Show user message
+    // USER MESSAGE
 
-    const userMessage = document.createElement("div");
+    const userMessage =
+        document.createElement("div");
 
-    userMessage.className = "message user";
 
-    userMessage.innerHTML = "👤 <strong>You:</strong><br>";
+    userMessage.className =
+        "message user";
+
+
+    userMessage.innerHTML =
+        '<div class="message-label">👤 You</div>';
+
 
     userMessage.appendChild(
         document.createTextNode(question)
     );
+
 
     chat.appendChild(userMessage);
 
 
     input.value = "";
 
+
     button.disabled = true;
 
     button.innerText = "Thinking...";
 
 
-    // Temporary bot message
+    // BOT MESSAGE
 
-    const botMessage = document.createElement("div");
+    const botMessage =
+        document.createElement("div");
 
-    botMessage.className = "message bot";
+
+    botMessage.className =
+        "message bot";
+
 
     botMessage.innerHTML =
-        "🤖 <strong>Sarvam:</strong><br>Thinking...";
+        '<div class="message-label">🤖 Sarvam</div>Thinking...';
+
 
     chat.appendChild(botMessage);
+
+
+    chat.scrollTop =
+        chat.scrollHeight;
 
 
     try {
 
 
-        console.log("Sending request...");
+        const response =
+            await fetch("/ask", {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    question: question
+
+                })
+
+            });
 
 
-        const response = await fetch("/ask", {
-
-            method: "POST",
-
-            headers: {
-
-                "Content-Type": "application/json"
-
-            },
-
-            body: JSON.stringify({
-
-                question: question
-
-            })
-
-        });
-
-
-        console.log(
-            "Server response:",
-            response.status
-        );
-
-
-        const data = await response.json();
+        const data =
+            await response.json();
 
 
         if (!response.ok) {
@@ -450,7 +903,7 @@ async function askQuestion() {
 
 
         botMessage.innerHTML =
-            "🤖 <strong>Sarvam:</strong><br>";
+            '<div class="message-label">🤖 Sarvam</div>';
 
 
         botMessage.appendChild(
@@ -464,29 +917,24 @@ async function askQuestion() {
     catch (error) {
 
 
-        console.error(error);
-
-
-        botMessage.className =
-            "message error";
-
-
         botMessage.innerHTML =
-            "❌ <strong>Error:</strong><br>";
+            '<div class="message-label">❌ Error</div>';
 
 
         botMessage.appendChild(
             document.createTextNode(error.message)
         );
 
-
     }
 
 
     button.disabled = false;
 
-    button.innerText = "Ask Sarvam";
+    button.innerText = "Ask";
 
+
+    chat.scrollTop =
+        chat.scrollHeight;
 
 }
 

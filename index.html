@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mech AI Mentor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🔧 Mech AI Mentor</h1>
+
+        <p class="subtitle">
+            Your AI mentor for Mechanical Engineering
+        </p>
+
+        <div class="chat-box">
+
+            <div id="chat">
+                <div class="bot">
+                    🤖 <b>Sarvam:</b>
+                    <p>Ask me anything about Mechanical Engineering!</p>
+                </div>
+            </div>
+
+            <div class="input-area">
+
+                <input
+                    type="text"
+                    id="question"
+                    placeholder="Ask a question..."
+                >
+
+                <button onclick="askQuestion()">
+                    Ask Sarvam
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        async function askQuestion() {
+
+            const input = document.getElementById("question");
+            const question = input.value.trim();
+
+            if (!question) return;
+
+            const chat = document.getElementById("chat");
+
+            // Show user's question
+            chat.innerHTML += `
+                <div class="user">
+                    👤 <b>You:</b>
+                    <p>${question}</p>
+                </div>
+            `;
+
+            input.value = "";
+
+            // Show loading message
+            const botMessage = document.createElement("div");
+
+            botMessage.className = "bot";
+
+            botMessage.innerHTML = `
+                🤖 <b>Sarvam:</b>
+                <p>Thinking...</p>
+            `;
+
+            chat.appendChild(botMessage);
+
+
+            // Send question to Python backend
+            const response = await fetch("/ask", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    question: question
+                })
+
+            });
+
+
+            // Get Sarvam's answer
+            const data = await response.json();
+
+
+            // Display answer
+            botMessage.innerHTML = `
+                🤖 <b>Sarvam:</b>
+                <p>${data.answer}</p>
+            `;
+        }
+
+    </script>
+
+</body>
+</html>
